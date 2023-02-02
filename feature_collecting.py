@@ -133,14 +133,14 @@ def calculate_final_histogram(img):
 f = open("features_lbp.txt", "w")
 count_line = 0
 
-f_dataset = open("demofile_29_04.txt", "r")
+f_dataset = open("annotations.txt", "r")
 line = f_dataset.readline()
 
 while(line != ''):
     array = line.split(' ')
     imageName = array[0]
     print("Nome da imagem" + imageName)
-    img = cv2.imread("aveleda_2020_07_23_zed_images/" + imageName + ".jpg")
+    img = cv2.imread("images/" + imageName + ".jpg")
     
     #resize
     imgResized = cv2.resize(img, (640,480))

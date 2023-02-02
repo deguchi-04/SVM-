@@ -6,6 +6,8 @@ from sklearn.svm import SVC
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 import sklearn
 
 #function to append the values to each class
@@ -49,7 +51,7 @@ feature_list = []
 label_list = []
 image_name_list = []
 line_aux_list = []
-f_features = open("features_lbp_gli_hue_10_05.txt", "r")
+f_features = open("features_lbp.txt", "r")
 
 #read features file
 line = f_features.readline()
@@ -61,7 +63,7 @@ while line != '':
     line = f_features.readline()
 
 #read dataset file
-f_dataset = open("demofile_10_05.txt", "r")
+f_dataset = open("annotations.txt", "r")
 
 line = f_dataset.readline()
 while line != '':
@@ -171,7 +173,6 @@ matrix = confusion_matrix(data_label_test, results, sample_weight=None, normaliz
 diagonal_area = 0
 for i in range(4):
     diagonal_area += matrix[i][i]
-
 
     
 plot_confusion_matrix(data_label_test, results)
