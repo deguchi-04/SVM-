@@ -30,6 +30,7 @@ def plot_confusion_matrix(labels, pred_labels):
     cm = confusion_matrix(labels, pred_labels,  sample_weight=None, normalize='true');
     cm = ConfusionMatrixDisplay(cm, display_labels =classes);
     cm.plot(values_format='f', cmap='Blues', ax=ax)
+    plt.show()
 
 classes = ('0', '33', '66', '100')
 
