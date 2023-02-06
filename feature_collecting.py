@@ -39,8 +39,60 @@ def calculate_index_expression(img_pixel, index_name):
             result = ((Rg*Rg) - (Rr*Rb)) / ((Rg*Rg) + (Rr*Rb))
         except ZeroDivisionError:
             result = 0
+    elif index_name == "ri":
+        try:
+            result = (Rr - Rg)/(Rr + Rg)
+        except ZeroDivisionError:
+            result = 0
+    elif index_name == "cive":
+        try:
+            result = 0.441*Rr - 0.811*Rg + 0.385*Rb + 18.78745
+        except ZeroDivisionError:
+            result = 0
+    elif index_name == "mexg":
+        try:
+            result = 1.262*Rg - 0.884*Rr - 0.311*Rb
+        except ZeroDivisionError:
+            result = 0
+    elif index_name == "exg":
+        R = Rr/255
+        G = Rg/255
+        B = Rb/255
+        try:
+            r = R/(R+G+B)
+        except ZeroDivisionError:
+            r = 0
+        try:
+            g = G/(R+G+B)
+        except ZeroDivisionError:
+            g = 0
+        try:
+            b = G/(R+G+B)
+        except ZeroDivisionError:
+            b = 0
+        
+        result = 2*g-r-b
+        return result
+    elif index_name == "exgr":
+        R = Rr/255
+        G = Rg/255
+        B = Rb/255
+        try:
+            r = R/(R+G+B)
+        except ZeroDivisionError:
+            r = 0
+        try:
+            g = G/(R+G+B)
+        except ZeroDivisionError:
+            g = 0
+        try:
+            b = G/(R+G+B)
+        except ZeroDivisionError:
+            b = 0
 
-    return result
+       
+        result = (2*g-r-b) - (1.6*Rr - Rg)
+        return result
 
 def calculate_vegetaion_index(img, index_name):
     data = img.shape
