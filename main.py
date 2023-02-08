@@ -4,12 +4,13 @@ import Augmentor
 
 
 f = open("demofile.txt", "a")
-imageNumber = 12850
-while(imageNumber < 12975):
-    imageName = "left" + str(imageNumber).zfill(4)
-    print("Nome da imagem" + imageName)
-    imgOrigin = cv2.imread("images/" + imageName + ".jpg")
-
+imageNumber = 1
+while(imageNumber < 2375):
+    imageName = "left" + str(imageNumber)
+    print("Nome da imagem: " + imageName)
+    imgOrigin = cv2.imread("../images/output/" + imageName + ".jpg")
+    cv2.imshow("Image origin", imgOrigin)
+    cv2.waitKey(1000)
     imgResized = cv2.resize(imgOrigin, (640,480))
 
     cv2.rectangle(imgResized, (227,10), (414, 150), (0,0,255), 2)
@@ -32,4 +33,4 @@ while(imageNumber < 12975):
 
     cv2.destroyAllWindows()
 
-    imageNumber += 5
+    imageNumber += 1
