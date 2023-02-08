@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import Augmentor
 
 
 f = open("demofile.txt", "a")
@@ -7,7 +8,7 @@ imageNumber = 12850
 while(imageNumber < 12975):
     imageName = "left" + str(imageNumber).zfill(4)
     print("Nome da imagem" + imageName)
-    imgOrigin = cv2.imread("aveleda_2020_07_23_zed_images/" + imageName + ".jpg")
+    imgOrigin = cv2.imread("images/" + imageName + ".jpg")
 
     imgResized = cv2.resize(imgOrigin, (640,480))
 

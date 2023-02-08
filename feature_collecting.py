@@ -23,6 +23,10 @@ def calculate_index_expression(img_pixel, index_name):
     Rb = float(img_pixel[0])
     Rg = float(img_pixel[1])
     Rr = float(img_pixel[2])
+    R = Rr/255
+    G = Rg/255
+    B = Rb/255
+    a = 0.667
     
     if index_name == "ngrdi":
         try:
@@ -55,9 +59,6 @@ def calculate_index_expression(img_pixel, index_name):
         except ZeroDivisionError:
             result = 0
     elif index_name == "exg":
-        R = Rr/255
-        G = Rg/255
-        B = Rb/255
         try:
             r = R/(R+G+B)
         except ZeroDivisionError:
@@ -74,9 +75,6 @@ def calculate_index_expression(img_pixel, index_name):
         result = 2*g-r-b
         return result
     elif index_name == "exgr":
-        R = Rr/255
-        G = Rg/255
-        B = Rb/255
         try:
             r = R/(R+G+B)
         except ZeroDivisionError:
@@ -90,9 +88,13 @@ def calculate_index_expression(img_pixel, index_name):
         except ZeroDivisionError:
             b = 0
 
-       
         result = (2*g-r-b) - (1.6*Rr - Rg)
         return result
+    elif index_name == "vi":
+        try:
+            result = Rg/((Rr**a) + (Rb**(1-a)))
+        except ZeroDivisionError:
+            result = 0
 
 def calculate_vegetaion_index(img, index_name):
     data = img.shape
@@ -179,8 +181,6 @@ def calculate_final_histogram(img):
     return final_hist
 
 
-
-
     
 f = open("features_lbp.txt", "w")
 count_line = 0
@@ -227,64 +227,3 @@ while(line != ''):
     line = f_dataset.readline()
 
 print("Linhas guardadas "+ str(count_line))
-
-"""
-img_origin = cv2.imread("aveleda_2020_07_23_zed_images/left6335.jpg")
-print(img_origin.shape)
-img_resized = cv2.resize(img_origin, (640,480))
-
-print(data)
-
-gli_hist = np.zeros(10)
-vari_hist = np.zeros(10)
-vari_hist = np.zeros(data[0]*data[1])
-ngrdi_hist = np.zeros(10)
-#RGBVI
-count = 0
-for i in range(data[0]):
-    for j in range(data[1]):
-        Rb = float(img_resized[i,j,0])
-        Rg = float(img_resized[i,j,1])
-        Rr = float(img_resized[i,j,2])
-        rgbvi = ((Rg*Rg) - (Rr*Rb)) / ((Rg*Rg) + (Rr*Rb))
-        gli = ((2*Rg) - Rr - Rb) / ((2*Rg) + Rr + Rb)
-        try:
-            vari = (Rg - Rr) / (Rg + Rr - Rb)
-        except ZeroDivisionError:
-            vari = 0
-        ngrdi = (Rg - Rr) / (Rg + Rr)
-        # y = 5 x + 5
-        
-        #print(pos)
-        rgbvi_hist[int( (4.5 * rgbvi) + 4.5)] +=1
-        gli_hist[int( (4.5 * gli) + 4.5)] +=1
-        #if vari < -1 or vari > 1:
-            #print(Rb, Rg, Rr)
-            #print(vari)
-        #vari_hist[int( (4.5 * vari) + 4.5)] +=1
-        ngrdi_hist[int( (4.5 * ngrdi) + 4.5)] +=1
-        #rgbvi_hist[count] =  int((rgbvi + 1) * (255/2))
-        #rgbvi_hist[count] = rgbvi
-        #gli_hist[count] = gli
-        vari_hist[count] = vari
-        #ngrdi_hist[count] = ngrdi
-        count +=1
-
-#np.interp(vari_hist, (np.min(vari_hist), np.max(vari_hist)), (-1, +1))
-
-#print(vari_hist)
-
-x = [0,1,2,3,4,5,6,7,8,9]
-
-vari_h = np.ones(10)
-
-
-#for i in vari_hist:
-#    print(i)
-#    vari_h[int( (4.5 * i) + 4.5)] +=1
-
-#plt.hist([rgbvi_hist, gli_hist, vari_hist, ngrdi_hist], bins = 10, label=['RGBVI','GLI', 'VARI', 'NGRDI'])
-#plt.hist(vari_hist, bins=10)
-plt.bar(x, vari_hist)
-plt.show()
-"""
