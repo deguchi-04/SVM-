@@ -34,20 +34,6 @@ def plot_confusion_matrix(labels, pred_labels):
 
 classes = ('0', '33', '66', '100')
 
-
-def label_to_percentage(label_list):
-    percentage_list = []
-    for i in label_list:
-        if i == 0:
-            percentage_list.append(0)
-        elif i == 1:
-            percentage_list.append(33)
-        elif i == 2:
-            percentage_list.append(66)
-        elif i == 3:
-            percentage_list.append(100)
-    return percentage_list
-
 feature_list = []
 label_list = []
 image_name_list = []
@@ -101,11 +87,14 @@ data_label_test = label_list[:285]
 
 
 
+
 print(len(data_train))
 print(len(data_test))
 
 clf = make_pipeline(StandardScaler(), SVC(C=1,gamma='auto'))
+print(clf)
 clf.fit(data_train, data_label_train)
+
 
 #print(data_test[0])
 #print(clf.predict(data_test.reshape(1,)))
@@ -170,11 +159,14 @@ while i < list_range:
         read = input("Left - pred_value Right - true_value?: ")
     i+=1
 
+
 matrix = confusion_matrix(data_label_test, results, sample_weight=None, normalize='true')
+
 diagonal_area = 0
 for i in range(4):
     diagonal_area += matrix[i][i]
 
     
-plot_confusion_matrix(data_label_test, results)
+
 print("\nDiagonal area:", (diagonal_area/4))
+plot_confusion_matrix(data_label_test, results)

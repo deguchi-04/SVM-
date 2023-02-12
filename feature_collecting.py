@@ -50,12 +50,12 @@ def calculate_index_expression(img_pixel, index_name):
             result = 0
     elif index_name == "cive":
         try:
-            result = 0.441*Rr - 0.811*Rg + 0.385*Rb + 18.78745
+            result = (0.441*Rr - 0.811*Rg + 0.385*Rb + 18.78745)/255
         except ZeroDivisionError:
             result = 0
     elif index_name == "mexg":
         try:
-            result = 1.262*Rg - 0.884*Rr - 0.311*Rb
+            result = (1.262*Rg - 0.884*Rr - 0.311*Rb)/255
         except ZeroDivisionError:
             result = 0
     elif index_name == "exg":
@@ -88,13 +88,14 @@ def calculate_index_expression(img_pixel, index_name):
         except ZeroDivisionError:
             b = 0
 
-        result = (2*g-r-b) - (1.6*Rr - Rg)
+        result = ((2*g-r-b) - (1.6*Rr - Rg))/255
         return result
     elif index_name == "vi":
         try:
-            result = Rg/((Rr**a) + (Rb**(1-a)))
+            result = (Rg/((Rr**a) + (Rb**(1-a))))/255
         except ZeroDivisionError:
             result = 0
+    return result
 
 def calculate_vegetaion_index(img, index_name):
     data = img.shape
@@ -112,6 +113,7 @@ def calculate_vegetaion_index(img, index_name):
     for i in range(data[0]):
         for j in range(data[1]):
             index_value = calculate_index_expression(img[i,j], index_name)
+            ##print(index_value)
             index_hist[int( (4.5 * index_value) + 4.5)] +=1
             
             #green component
@@ -131,7 +133,7 @@ def calculate_vegetaion_index(img, index_name):
     average_hist[1] = (average_green/(count_pixels*255)) 
     
     #uncoment to not consider these averages
-    #average_hist = []
+    average_hist = []
 
     #join ngrdi histogram with average histogram
     result_hist = np.concatenate((index_hist, average_hist), axis=None)        
@@ -168,12 +170,12 @@ def calculate_final_histogram(img):
     #lbp_hist = []
     
     #calculate RGBVI histogram
-    #index_hist = calculate_vegetaion_index(img, "rgbvi")
-    index_hist = []
+    index_hist = calculate_vegetaion_index(img, "mexg")
+    #index_hist = []
     
     #calculate Hue (HSV) histogram
-    #hue_hist = calculate_hue_histogram(img)
-    hue_hist = []
+    hue_hist = calculate_hue_histogram(img)
+    #hue_hist = []
 
     #join the histograms
     final_hist = np.concatenate((lbp_hist, index_hist, hue_hist),axis=None)
@@ -191,8 +193,8 @@ line = f_dataset.readline()
 while(line != ''):
     array = line.split(' ')
     imageName = array[0]
-    print("Nome da imagem" + imageName)
-    img = cv2.imread("images/" + imageName + ".jpg")
+    print("Nome da imagem: " + imageName)
+    img = cv2.imread("../imagesOri/" + imageName + ".jpg")
     
     #resize
     imgResized = cv2.resize(img, (640,480))

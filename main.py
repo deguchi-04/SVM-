@@ -1,16 +1,13 @@
 import cv2
 import numpy as np
-import Augmentor
 
 
-f = open("demofile.txt", "a")
-imageNumber = 1
-while(imageNumber < 2375):
+f = open("dataset_aug.txt", "a")
+imageNumber = 601
+while(imageNumber < 686):
     imageName = "left" + str(imageNumber)
     print("Nome da imagem: " + imageName)
-    imgOrigin = cv2.imread("../images/output/" + imageName + ".jpg")
-    cv2.imshow("Image origin", imgOrigin)
-    cv2.waitKey(1000)
+    imgOrigin = cv2.imread("../imagesAugDouble/" + imageName + ".jpg")
     imgResized = cv2.resize(imgOrigin, (640,480))
 
     cv2.rectangle(imgResized, (227,10), (414, 150), (0,0,255), 2)
@@ -28,9 +25,7 @@ while(imageNumber < 2375):
     f.write(readValue + " ")
     readValue = input("Third rectangle ") 
     f.write(readValue + " \n")
-
     #cv2.waitKey(1000)
-
     cv2.destroyAllWindows()
 
     imageNumber += 1
